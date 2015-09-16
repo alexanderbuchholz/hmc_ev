@@ -1,15 +1,14 @@
 # function to run hmc for eigenvalues
 #library(mixAK)
 f.HMC_simulation_eigenvalues <- function(big_M, epsilon, L, v, s, lambda, intervall_ev=NULL){
-  d <- s
+  d <- s # set dimension
   # preallocate
-  x = array(NA, dim=c(d,big_M)) # output 1: Cholesky decomp
-  xx = array(NA, dim=c(c(d,d),big_M)) #  output 2: Covar
+  x = array(NA, dim=c(d,big_M)) # output 1: eigenvalues
+  xx = array(NA, dim=c(c(d,d),big_M)) #  output 2: Wishart dist
   xxx = array(NA, dim=c(c(d,d),big_M)) #  output 3: rotation
   vec.bounce_counter <- rep(0,big_M) # output bounce counter
   vec.reject_counter <- rep(0,big_M) # output bounce counter
   
-  #inter.f.hmc = try(f.HMC( epsilon, L, v, s, Sigma, Sigma_inv, l), silent=F)
   inter.f.hmc = f.HMC_eigenvalues( epsilon, L, v, s,  lambda, intervall_ev)
   vec.reject_counter[1] = inter.f.hmc[[2]]
   vec.bounce_counter[1] = inter.f.hmc[[3]]
@@ -20,11 +19,9 @@ f.HMC_simulation_eigenvalues <- function(big_M, epsilon, L, v, s, lambda, interv
   xxx[,,1] = rotate
   
   counter = 0 
+  # loop over number of desired iterations
   for(i in 2:big_M){
-    
-    #is.natural <- function(x){ x>0 && identical(round(x), x)    }
-    #if(is.natural((i/10))){print(paste("Iteration", i))}
-    #inter.f.hmc = try(f.HMC( epsilon, L, v, s, Sigma, Sigma_inv, x[,,i-1]), silent=F)
+
     inter.f.hmc = f.HMC_eigenvalues( epsilon, L, v, s, x[,i-1], intervall_ev)
     inter = inter.f.hmc[[1]]
     
@@ -58,6 +55,3 @@ f.HMC_simulation_eigenvalues <- function(big_M, epsilon, L, v, s, lambda, interv
   output <- list(x, xx, xxx, v, s, counter, vec.reject_counter, vec.bounce_counter,  epsilon, L)
   return(output)
 }
-
-# test <- f.HMC_simulation_eigenvalues(1000, 0.01, 100, v, s, lambda, intervall_ev)
-# test <- f.HMC_simulation_eigenvalues(1000, 0.2, 100, v, s, lambda)

@@ -15,8 +15,8 @@ f.constraint_wish <- function(deg_free,p_size,N_runs, D_constraint){
   while(successful_tries < (N_runs) ){
     
     # print something that lets the use know where we are
-    if((break_counter %% 1000) ==0){
-      print("Already too many breaks!")
+    if((break_counter %% 10000) ==0){
+      print("Already a lot of breaks!")
       print(break_counter)
     }
     # set criteria for too many iterations
