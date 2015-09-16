@@ -7,7 +7,6 @@ f.HMC_simulation <- function(big_M, epsilon, L, v, s, Sigma, Sigma_inv, l){
   vec.bounce_counter <- rep(0,big_M) # output bounce counter
   vec.reject_counter <- rep(0,big_M) # output bounce counter
   
-  #inter.f.hmc = try(f.HMC( epsilon, L, v, s, Sigma, Sigma_inv, l), silent=F)
   inter.f.hmc = f.HMC( epsilon, L, v, s, Sigma, Sigma_inv, l)
   vec.reject_counter[1] = inter.f.hmc[[2]]
   vec.bounce_counter[1] = inter.f.hmc[[3]]
@@ -19,7 +18,7 @@ f.HMC_simulation <- function(big_M, epsilon, L, v, s, Sigma, Sigma_inv, l){
   for(i in 2:big_M){
     is.natural <- function(x){ x>0 && identical(round(x), x)    }
     if(is.natural((i/500))){print(paste("Iteration", i))}
-    #inter.f.hmc = try(f.HMC( epsilon, L, v, s, Sigma, Sigma_inv, x[,,i-1]), silent=F)
+    
     inter.f.hmc = f.HMC( epsilon, L, v, s, Sigma, Sigma_inv, x[,,i-1])
     inter = inter.f.hmc[[1]]
     

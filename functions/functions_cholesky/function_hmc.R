@@ -10,7 +10,6 @@ f.HMC = function (epsilon, L, v, s, Sigma, Sigma_inv, current_q){
   
   current_q <- vech(current_q)
   q = vech(current_q)
-  #p = matrix(rnorm(length(q),0,1),2,2) # independent standard normal variates
   p = rnorm(length(q),0,1) # independent standard normal variates
   current_p = p
   # Make a half step for momentum at the beginning
@@ -28,20 +27,13 @@ f.HMC = function (epsilon, L, v, s, Sigma, Sigma_inv, current_q){
     
       if(sum(diag(vech2full(q))<0) != 0){ # bounce
         I_d <- diag(1, dim(vech2full(q)))
-        #diag(I_d) = diag(vech2full(q))*(diag(vech2full(q))<0) # change here!! 
         diag(I_d) = diag(I_d)*(diag(vech2full(q))<0) # change here!! 
-        #I_d = diag(1,dim(vech2full(p))[1])
-        #I_d_norm <- sqrt(t(as.vector(I_d))%*%as.vector(I_d))#sum(as.vector(I_d))
-        I_d_norm = 1
         I_d_flat <- as.vector(vech(I_d))
-        n <- I_d_flat/I_d_norm
+        n <- I_d_flat
         p_flat <- as.vector(p)
         reflect_vec <- (t(p_flat)%*%n)*n
         p = (p - 2 * reflect_vec)
-        #print("Bounce!")
-        #print(vech2full(p))
-        #print(vech2full(q))
-        #print(vech2full(q + epsilon * p))
+        
         i.bounce_counter = i.bounce_counter + 1
         
       }
@@ -52,7 +44,6 @@ f.HMC = function (epsilon, L, v, s, Sigma, Sigma_inv, current_q){
   p = p - epsilon * f.gradient_u_hat(v, s, Sigma_inv, q) / 2
   
   if(sum(diag(vech2full(q))<0) != 0){
-    #print(vech2full(q))
     q = current_q
    # print("Error! Despite bounces bad proposal!")
   }
@@ -69,7 +60,7 @@ f.HMC = function (epsilon, L, v, s, Sigma, Sigma_inv, current_q){
   { out <- vech2full(q)
     out[!lower.tri(vech2full(q), diag=T)] <- 0
     output <- out # accept
-    #print(output)
+    if(current_U==proposed_U){i.reject_counter <- i.reject_counter + 1}
   }
   else{
     out_alt <- vech2full(current_q)

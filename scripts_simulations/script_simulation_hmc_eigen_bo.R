@@ -6,7 +6,7 @@ setwd("/home/alex/Dropbox/Master_Statistik/Masterarbeit/code_simulations/hmc_ev/
 #setwd("~/DATA/masterarbeit/simulations_cleaned/functions")
 source(file= "function_MASTER.R", local=T)
 
-working_directory = "/home/alex/Dropbox/Master_Statistik/Masterarbeit/code_simulations/hmc_ev/scripts_simulations"
+working_directory = "/home/alex/Dropbox/Master_Statistik/Masterarbeit/code_simulations/test_results"
 #working_directory = "~/DATA/masterarbeit/simulations_cleaned/simulations_HMC_eigen_BO/simulation_results/"
 setwd(working_directory)
 

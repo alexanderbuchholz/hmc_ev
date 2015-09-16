@@ -16,7 +16,6 @@ f.u_hat = function(v, s, Sigma, Sigma_inv, l){
   T_mm <- f.vectorize_tranpose(m)
   I_mm <- diag(1, m*m)
   I_m <- diag(1, m)
-  #derive_ll <- (diag(1,m) %x% l)%*% T_mm + (l %x% diag(1,m))
   
   derive_ll <- (I_mm + T_mm) %*% (l %x% I_m)
   
@@ -24,11 +23,3 @@ f.u_hat = function(v, s, Sigma, Sigma_inv, l){
   out <- -log(det(derive_ll ))-alpha*log(det(l%*%t(l)))+beta + 0.5*tr(Sigma_inv %*% l%*%t(l))
   return(out)
 }
-
-# test
-#v = 5 
-#s = 2
-#Sigma = diag(c(1,1))
-#Sigma_inv = Sigma
-#l = matrix(c(1,1,0,1),2,2)
-#f.u_hat(v, s, Sigma, Sigma_inv, l)

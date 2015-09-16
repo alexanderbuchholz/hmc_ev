@@ -15,6 +15,3 @@ f.vectorize_tranpose <- function(m){
   Tmn = Tmn[rI,i]
   return(Tmn)
   }
-
-# Tmm <- f.vectorize_tranpose(10)
-# diag(Tmm %*% Tmm)

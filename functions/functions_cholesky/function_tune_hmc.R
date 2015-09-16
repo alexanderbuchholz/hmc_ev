@@ -1,4 +1,5 @@
 # function to calibrate epsilon and L
+# for grid search
 
 f.tune_hmc <- function(Sigma, vec.epsilon, vec.L, v, s, big_M){
   Sigma_inv = solve(Sigma)
