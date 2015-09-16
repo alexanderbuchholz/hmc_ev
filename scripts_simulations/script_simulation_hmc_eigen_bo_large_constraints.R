@@ -1,12 +1,14 @@
 # simulation Bayesian optimization eigen decomp
-# 8-9-2015
-# version 2
+# 16-9-2015
+# version 3
 
 
-setwd("~/DATA/masterarbeit/simulations_cleaned/functions")
+setwd("/home/alex/Dropbox/Master_Statistik/Masterarbeit/code_simulations/hmc_ev/functions")
+#setwd("~/DATA/masterarbeit/simulations_cleaned/functions")
 source(file= "function_MASTER.R", local=T)
 
-working_directory = "~/DATA/masterarbeit/simulations_cleaned/simulations_HMC_eigen_BO_constraints/simulation_results/"
+working_directory = "/home/alex/Dropbox/Master_Statistik/Masterarbeit/code_simulations/test_results"
+#working_directory = "~/DATA/masterarbeit/simulations_cleaned/simulations_HMC_eigen_BO/simulation_results/"
 setwd(working_directory)
 
 library(Matrix)
@@ -21,12 +23,7 @@ low_tri <- lower.tri(matrix(0,s,s))*0
 up_tri <- upper.tri(matrix(0,s,s))*0
 
 Sigma = diagonal+low_tri+up_tri
-Sigma_inv = solve(Sigma) #matrix(c(1,0,0,1),2,2)
-l = t(chol(Sigma))
 ############################################
-#test_mat <- as.matrix(rWishart(1, v, Sigma)[,,1])
-
-#lambda_start <- eigen(test_mat, symmetric=F)$values
 
 lambda_start <- runif(s)
 
@@ -45,12 +42,10 @@ Gamma_space <- matrix(c(0.001, 2, 1, 100), 2,2)
 
 
 sigma_eta_hyper <- 0.1
-number_runs <- 50
+number_runs <- 5
 intervall_ev <- c(0,1)
 
-output_adaptive_hmc <- f.adaptive_hmc_eigen(lambda_start, Sigma, epsilon_start, L_start, v, s, big_M, number_runs, Gamma_space, k_hyper, alpha_hyper, sigma_eta_hyper, alpha2_hyper, intervall_ev)
-
-
+output_adaptive_hmc <- f.adaptive_hmc_eigen(lambda_start, epsilon_start, L_start, v, s, big_M, number_runs, Gamma_space, k_hyper, alpha_hyper, sigma_eta_hyper, alpha2_hyper, intervall_ev)
 
 save(output_adaptive_hmc, file=paste("results_adaptive_hmc_eigendecomp_", number_runs,"_big_M", big_M,"_",s,"_", ".Rda", sep=""))
 
@@ -58,6 +53,7 @@ save(output_adaptive_hmc, file=paste("results_adaptive_hmc_eigendecomp_", number
 # load stats file
 load(file=paste("stats_adaptive_hmc_bo_info",  "_v",v,"_s",s,".Rda", sep=""))
 
+# obtain adequate hyper-parameters
 max_index <- which.max(out_stat_eps_L_r$r_i)
 epsilon <- as.numeric(out_stat_eps_L_r[max_index,1])
 L <- as.numeric(out_stat_eps_L_r[max_index,2])
