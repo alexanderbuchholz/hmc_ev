@@ -16,7 +16,7 @@ f.adaptive_hmc_eigen <- function(lambda_start, epsilon_start, L_start, v, s, big
   # Iterate over 
   for(i in 1:number_runs){
     # run simulation and store results
-    test_output <- f.HMC_simulation_eigenvalues(big_M, epsilon, L, v, s, lambda, intervall_ev)#list(c(f.HMC_simulation(big_M, epsilon, L, v, s, Sigma, Sigma_inv, l), epsilon, L))
+    test_output <- f.HMC_simulation_eigenvalues(big_M, epsilon, L, v, s, lambda, intervall_ev)
     print("Rejections")
     print(test_output[[7]])
     print("Bounces")
@@ -57,7 +57,21 @@ f.adaptive_hmc_eigen <- function(lambda_start, epsilon_start, L_start, v, s, big
     
     
   }
-  r_i <- rbind(r_i, 0)
+  
+  # run algorithm a last time 
+  test_output <- f.HMC_simulation_eigenvalues(big_M, epsilon, L, v, s, lambda, intervall_ev)
+  print("Rejections")
+  print(test_output[[7]])
+  print("Bounces")
+  print(test_output[[8]])
+  list.results <- c(list.results, test_output)
+  
+  # return value of the objective function
+  int.value_objective_funtion <- f.objective_function_eigen(test_output)
+  print(paste("Value objective function", int.value_objective_funtion))
+  
+  # combine results in data frame
+  r_i <- rbind(r_i, int.value_objective_funtion)
   
   out_stat_eps_L_r <- cbind(epsilon_L_i, r_i)
   print(out_stat_eps_L_r)
