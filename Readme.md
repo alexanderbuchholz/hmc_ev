@@ -1,5 +1,5 @@
 # This is a sampler for constraint Wishart distributions based on Hamiltonian Monte Carlo.
-## For any questions or comments please refer to alexander.buchholz@ensae.fr
+## For any questions or comments please refer to alexander.buchholz@mrc-bsu.cam.ac.uk.
 ### We sample from Wishart distributions based on their Cholesky and eigenvalue decomposition.
 ### Arising hyper-parameters are adaptively tuned via Bayesian optimization based on Gaussian process regression
 
